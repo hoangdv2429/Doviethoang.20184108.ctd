@@ -130,7 +130,7 @@ void read_file_text(char* filename, char** stop_w, int *num_of_stop_w)
                 c = tolower(c); // lấy chữ đầu tiên của từ viết hoa và để nó thành viết thường
             }              
       
-        if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c == ',' || c == '(' || c == ')' || c == ':' || c == ';' || c == '-' || c == '!' || c == '\'' || c == '`' || c == '\"') 
+        if(c == ' ' || c == '\n' || c == '\0' || c == '\t' || c == ',' || c == '(' || c == ')' || c == ':' || c == ';' || c == '-' || c == '!' || c == '\'' || c == '`' || c == '\"' || c == '?') 
         {   
             if (isupper(c = fgetc(fp)))
             {
