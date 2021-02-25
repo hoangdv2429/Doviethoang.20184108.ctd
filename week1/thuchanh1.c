@@ -10,6 +10,10 @@ typedef struct node{
     struct node *left, *right; 
 }node;
 
+typedef struct stop_w{
+    char word[100];
+}stop_w;
+
 node *root = NULL; 
 
 void strlwr(char* token)
@@ -21,6 +25,29 @@ void strlwr(char* token)
     }
 }
 
+//function to check stop_w
+int check_stopw(stop_w* stop_ws,int *num_of_stop_w, char* word)
+{
+    for (int i=0;i< *num_of_stop_w; i++)
+    {
+        
+        if (strcmp(stop_ws[i].word,word) == 0)
+        {
+        return 1;
+        }     
+    }
+    return 0;
+}
+
+int check_num(char* a)
+{
+    for (int i=0;i< strlen(a); i++)
+        if (!isdigit(a[i]))
+        {
+            return 0;
+        }
+    return 1;
+}
 
 //use BST to store data and show in indexed-order
 
@@ -28,11 +55,11 @@ void strlwr(char* token)
 struct node *newNode(char* word,  int lineNo) 
 { 
     struct node *temp =  (struct node *)malloc(sizeof(node));
-    temp->word = (char*)malloc( 50 *sizeof(char)); 
+    temp->word = (char*)malloc(strlen(word)*sizeof(char)); 
     strcpy(temp->word,word);
     temp ->frequency = malloc(sizeof(int));
     *(temp->frequency) = 1; 
-    temp->appearance = (int*)malloc(50*sizeof(int)); // mặc định
+    temp->appearance = (int*)malloc(4000*sizeof(int)); // mặc định
     temp->appearance[0] = lineNo;
     temp->left = temp->right = NULL; 
     return temp; 
@@ -44,7 +71,7 @@ void inorder(node *root)
     if (root != NULL) 
     {   
         inorder(root->left); 
-        printf("%s %d", root->word,*(root->frequency));
+        printf("\"%s\" %d", root->word,*(root->frequency));
         for (int i = 0; i < *(root->frequency); i++)
         {
             printf(", %d", root->appearance[i]);
@@ -87,7 +114,7 @@ node* search(node* root, char* key) //no need
     return search(root->left, key); 
 } 
 
-void read_file_text(char* filename, char** stop_w, int *num_of_stop_w)
+void read_file_text(char* filename, stop_w* stop_w, int *num_of_stop_w)
 {
     FILE *fp;
     fp = fopen(filename, "r");
@@ -124,7 +151,13 @@ void read_file_text(char* filename, char** stop_w, int *num_of_stop_w)
                 // fseek(fp, -1, SEEK_CUR);
                 word[index] = '\0';                           
                 //printf(" %s\n ", word);
-                root = insert(root, word, lineNo);
+                if (!check_stopw(stop_w,num_of_stop_w,word))
+                {
+                    if(check_num(word) == 0)
+                    {
+                        root = insert(root, word, lineNo);
+                    }   
+                }  
                 word[0] = 0; //Reset word
                 index = 0;
                 c = tolower(c); // lấy chữ đầu tiên của từ viết hoa và để nó thành viết thường
@@ -143,11 +176,13 @@ void read_file_text(char* filename, char** stop_w, int *num_of_stop_w)
                 word[index] = '\0';                           
                 //printf(" %s\n ", word);
                 // if (!check_stopw(stop_w,num_of_stop_w,word))
-                // {
-
-                // }
-                
-                root = insert(root, word, lineNo);
+                if (!check_stopw(stop_w,num_of_stop_w,word))
+                {
+                    if(check_num(word) == 0)
+                    {
+                        root = insert(root, word, lineNo);
+                    }   
+                }              
                 word[0] = 0; //Reset word
                 index = 0;
             }
@@ -156,7 +191,13 @@ void read_file_text(char* filename, char** stop_w, int *num_of_stop_w)
                 fseek(fp, -1, SEEK_CUR);
                 word[index] = '\0';              
                 //printf(" %s\n ", word);
-                root = insert(root, word, lineNo);
+                if (!check_stopw(stop_w,num_of_stop_w,word))
+                {
+                    if(check_num(word) == 0)
+                    {
+                        root = insert(root, word, lineNo);
+                    }   
+                }  
                 word[0] = 0; //Reset word
                 index = 0;
             }         
@@ -171,28 +212,30 @@ void read_file_text(char* filename, char** stop_w, int *num_of_stop_w)
     fclose(fp); // Closing the file
 }
 
-char** read_stopw(char* filename, int* nums_stop_w)
+stop_w* read_stopw(char* filename, int* nums_stop_w)
 {
-    char str[10];
+    char str[50];
 
-    char** a = (char **)malloc(50 * sizeof(char *));
-    for (int i = 0; i < 50; i++)
-    {
-        a[i] = (char *)malloc(50 * sizeof(char));
-    }
-
+    // char** a = (char **)malloc(50 * sizeof(char *));
+    // for (int i = 0; i < 50; i++)
+    // {
+    //     a[i] = (char *)malloc(50 * sizeof(char));
+    // }
+    stop_w *a = malloc(sizeof(stop_w)*50);
     FILE *fp;
     fp = fopen(filename, "r");
     if (fp == NULL)
     {printf("Could not open file %s", filename);}
 
     int* i = malloc(sizeof(int));
+    *i = 0;
+    char* tmp = malloc(sizeof(char)*20);
     while(!feof(fp))
     {
         fscanf(fp ,"%s\n", str);
         //printf("\n %s \n", str);
-        strcpy(a[*i], str);
-        // printf("\n %s \n", a[i]);
+        strcpy(a[(*i)].word, str);
+        //printf("\n \"%s\" \n", a[(*i)].word);
         (*i)++;
     }
     *nums_stop_w = *i;
@@ -201,31 +244,18 @@ char** read_stopw(char* filename, int* nums_stop_w)
     return a;
 }
 
-//function to check stop_w
-int check_stopw(char** stop_w,int *num_of_stop_w, char* word)
-{
-    for (int i=0;i< *num_of_stop_w; i++)
-    {
-        if (strcmp(stop_w[i],word) == 0) return 1;
-    }
-    return 0;
-}
-
-
-
 int main()
 { 
-    char* stop_w = "stopw.txt";
+    char* stop_w_file = "stopw.txt";
     // char* text_file = "vanban.txt";
-    char* text_file = "vanban.txt";
+    char* text_file = "alice30.txt";
     int* nums_stop_w = malloc(sizeof(int));
 
     //use BST to store words in text file because of Its quantity is huge.
     //use array to store stop words because there aren't that many words.
-   
-    char **stop_word = read_stopw(stop_w, nums_stop_w); // 2-dimension array contains all stop words
+    stop_w *stop_word = read_stopw(stop_w_file, nums_stop_w); // 2-dimension array contains all stop words
     // printf("%d\n", *nums_stop_w); 
-    read_file_text(text_file, );
+    read_file_text(text_file, stop_word, nums_stop_w);
     inorder(root);
     
     return 0;   
