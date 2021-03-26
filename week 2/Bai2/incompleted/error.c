@@ -10,6 +10,8 @@
 
 void error(ErrorCode err, int lineNo, int colNo) {
   switch (err) {
+  case ERR_NUMBERTOOLONG:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_NUMBERTOOLONG);
   case ERR_ENDOFCOMMENT:
     printf("%d-%d:%s\n", lineNo, colNo, ERM_ENDOFCOMMENT);
     break;
@@ -20,6 +22,9 @@ void error(ErrorCode err, int lineNo, int colNo) {
     printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDCHARCONSTANT);
     break;
   case ERR_INVALIDSYMBOL:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDSYMBOL);
+    break;
+  case ERR_INVALIDSTRINGCONSTANT:
     printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDSYMBOL);
     break;
   }

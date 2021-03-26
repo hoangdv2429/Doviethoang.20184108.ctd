@@ -8,13 +8,13 @@
 #define __TOKEN_H__
 
 #define MAX_IDENT_LEN 15
-#define KEYWORDS_COUNT 20
+#define KEYWORDS_COUNT 24
 
 typedef enum {
-  TK_NONE, TK_IDENT, TK_NUMBER, TK_CHAR, TK_EOF,
+  TK_NONE, TK_IDENT, TK_FLOAT, TK_NUMBER, TK_CHAR, TK_EOF,TK_STRING,
 
   KW_PROGRAM, KW_CONST, KW_TYPE, KW_VAR,
-  KW_INTEGER, KW_CHAR, KW_ARRAY, KW_OF, 
+  KW_INTEGER, KW_FLOAT, KW_CHAR, KW_STRING, KW_ARRAY, KW_OF, 
   KW_FUNCTION, KW_PROCEDURE,
   KW_BEGIN, KW_END, KW_CALL,
   KW_IF, KW_THEN, KW_ELSE,
@@ -32,6 +32,11 @@ typedef struct {
   TokenType tokenType;
   int value;
 } Token;
+//  khai báo một token .
+// - một sâu lưu lại toàn bộ
+// - lưu lại dòng , lưu lại cột
+// - loại token đang sử dụng
+// value 
 
 TokenType checkKeyword(char *string);
 Token* makeToken(TokenType tokenType, int lineNo, int colNo);

@@ -8,10 +8,12 @@
 #define __ERROR_H__
 
 typedef enum {
+  ERR_NUMBERTOOLONG,
   ERR_ENDOFCOMMENT,
   ERR_IDENTTOOLONG,
   ERR_INVALIDCHARCONSTANT,
-  ERR_INVALIDSYMBOL
+  ERR_INVALIDSYMBOL,
+  ERR_INVALIDSTRINGCONSTANT
 } ErrorCode;
 
 
@@ -19,6 +21,8 @@ typedef enum {
 #define ERM_IDENTTOOLONG "Identification too long!"
 #define ERM_INVALIDCHARCONSTANT "Invalid const char!"
 #define ERM_INVALIDSYMBOL "Invalid symbol!"
+#define ERM_NUMBERTOOLONG "Number too long!"
+#define ERM_INVALIDSTRINGCONSTANT "Invalid const string!"
 
 void error(ErrorCode err, int lineNo, int colNo);
 
