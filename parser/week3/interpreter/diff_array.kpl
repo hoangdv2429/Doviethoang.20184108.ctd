@@ -1,0 +1,15 @@
+PROGRAM DIFF_ARRAY; 
+TYPE T = INTEGER;
+VAR A : ARRAY(. 10 .) OF T;
+    B : ARRAY(. 10 .) OF T;
+
+PROCEDURE INPUT(ARR ARRAY);
+VAR I: INTEGER;
+BEGIN
+    FOR I := 1 TO 10 DO
+        BEGIN
+            ARR(.I.) := READI;
+        END
+END;
+
+FUNCTION DIFF
