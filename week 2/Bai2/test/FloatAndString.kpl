@@ -1,0 +1,15 @@
+Program Example1; (* Example 1 *)
+TYPE T = INTEGER;
+VAR I:FLOAT;
+    D:STRING;
+    A : ARRAY(.10.) OF T;
+
+Begin
+I:= 1.5;
+I:= .5;
+I:= -.5;
+I:= 5.;
+I:= 5;
+D:="hello";
+I:= .;
+End. (* Example 1 *)

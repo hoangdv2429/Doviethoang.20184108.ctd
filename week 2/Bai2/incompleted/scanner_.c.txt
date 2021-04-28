@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include <string.h>
 
 #include "reader.h"
 #include "charcode.h"
@@ -17,8 +16,6 @@
 extern int lineNo;
 extern int colNo;
 extern int currentChar;
-
-int RSEL_dif_Float = 0; //*
 
 extern CharCode charCodes[];
 
@@ -87,56 +84,48 @@ Token *readIdentKeyword(void)
 
   return token;
 }
-
-Token *readNumber()
+Token *readNumber(void)
 {
-  Token *token = makeToken(TK_NUMBER, lineNo, colNo);
+  // TODO
   int count = 0;
-  int check_float = 0;
-  // while (((currentChar != EOF) && (charCodes[currentChar] == CHAR_DIGIT)) || charCodes[currentChar] == CHAR_PERIOD)
-  // {
-  //   if (charCodes[currentChar] == CHAR_PERIOD)
-  //   {
-  //     token->tokenType = TK_FLOAT;
-  //     check_float++;
-  //   }
-  // token->string[count++] = (char)currentChar;
-  // readChar();
-  while ((charCodes[currentChar] == CHAR_DIGIT || charCodes[currentChar] == CHAR_PERIOD))
+  Token *token = makeToken(TK_NUMBER, lineNo, colNo);
+  int fl = 0;
+  while (charCodes[currentChar] == CHAR_DIGIT || charCodes[currentChar] == CHAR_PERIOD)
   {
-
     if (charCodes[currentChar] == CHAR_PERIOD)
     {
-      token->tokenType = TK_FLOAT;
-      check_float++;
+      if (fl == 0)
+      {
+        token->tokenType = TK_FLOAT;
+        token->string[count++] = currentChar;
+        fl++;
+        readChar();
+      }
+      else
+      {
+        error(ERR_INVALIDFLOAT, token->lineNo, token->colNo);
+      }
     }
-    if (count > 9)
-    {
-      error(ERR_NUMBERTOOLONG, token->lineNo, token->colNo);
+    if (charCodes[currentChar] == CHAR_SEMICOLON){
+      token = makeToken(SB_SEMICOLON, lineNo, colNo);
+      readChar();    
     }
-    if (check_float > 1)
-      error(ERR_INVALIDFLOAT, token->lineNo, token->colNo);
+    //Add current character to the number
     token->string[count] = currentChar;
+    //Increase string index;
     count++;
+    //Read the next char
     readChar();
   }
-  if (charCodes[currentChar] == CHAR_RPAR)
-  {
-    token->string[--count] = '\0';
-    token->tokenType = TK_NUMBER;
-    token->value = atoi(token->string);
-    RSEL_dif_Float = 1;
-    return token;
-  }
+
+  //End string
+
   token->string[count] = '\0';
-  if (check_float == 0)
-  {
-    token->value = atoi(token->string);
-  }
-  else
-  {
-    token->value = atof(token->string);
-  }
+
+  // Convert current number to string
+
+  token->value = atoi(token->string);
+
   return token;
 }
 
@@ -294,6 +283,7 @@ Token *getToken(void)
     readChar();
     if (charCodes[currentChar] == CHAR_RPAR)
     {
+      // it is token Right Parenthesis
       token->tokenType = SB_RSEL;
       readChar();
     }
@@ -305,12 +295,9 @@ Token *getToken(void)
       token->string[1] = '.';
       while (charCodes[currentChar] == CHAR_DIGIT)
       {
-        if (count > 9)
-        {
-          error(ERR_NUMBERTOOLONG, token->lineNo, token->colNo);
-        }
-        token->string[count] = currentChar;
-        count++;
+        if (count > 15)
+          error(ERR_NUMBERTOOLONG, token->lineNo, token->colNo);        
+        token->string[++count] = currentChar;
         readChar();
       }
       token->string[count] = '\0';
@@ -357,18 +344,11 @@ Token *getToken(void)
       return makeToken(SB_LPAR, ln, cn);
     }
   case CHAR_RPAR:
-    if (RSEL_dif_Float == 0)
-    {
-      token = makeToken(SB_RPAR, lineNo, colNo);
-    }
-    else
-    {
-      token = makeToken(SB_RSEL, lineNo, colNo);
-      RSEL_dif_Float = 0;
-    }
+    token = makeToken(SB_RPAR, lineNo, colNo);
     readChar();
     return token;
   default:
+    //bang mot cach than ky nao do no se vao day
     token = makeToken(TK_NONE, lineNo, colNo);
     error(ERR_INVALIDSYMBOL, lineNo, colNo);
     readChar();
