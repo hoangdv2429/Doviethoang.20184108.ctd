@@ -1,0 +1,66 @@
+PROGRAM INPUTFMIN; 
+TYPE T = INTEGER;
+VAR A : ARRAY(. 10 .) OF T;
+
+PROCEDURE INPUT;
+VAR I: INTEGER;
+BEGIN
+    FOR I := 0 TO 9 DO
+        BEGIN
+            A(.I.) := READI;
+        END
+END;
+
+PROCEDURE PRINT;
+VAR Y : INTEGER;
+BEGIN
+  FOR Y := 0 TO 9 DO
+    BEGIN
+        CALL WRITEI( A(.Y.) );
+    END
+END;
+
+FUNCTION DIFF : INTEGER;
+VAR Y : INTEGER;
+    M : INTEGER;
+    Z : INTEGER;
+BEGIN
+    M := 0;
+    FOR Y := 0 TO 9 DO
+        BEGIN 
+            FOR Z := Y + 1 TO 9 DO
+                BEGIN
+                    IF A(.Y.) = A(.Z.) THEN
+                        M := 1;
+                    (*Z := Z + 1;*)
+                END;
+            (*Y := Y + 1;*)
+        END;
+    DIFF := M;
+END;
+
+FUNCTION MIN : INTEGER;
+VAR Y : INTEGER;
+    M : INTEGER;
+BEGIN
+  M := A(.0.);
+  FOR Y := 1 TO 9 DO
+    BEGIN
+        IF M >= A(.Y.) THEN
+            BEGIN
+                M := A(.Y.);
+                Y := Y + 1;
+            END
+    END;
+  MIN := M;
+END;
+
+BEGIN
+    CALL INPUT;
+    (*CALL PRINT;*)
+    CALL WRITELN;
+    CALL WRITEI(MIN);
+    CALL WRITELN;
+    CALL WRITEI(DIFF);
+    
+END.
