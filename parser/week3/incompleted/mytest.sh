@@ -3,4 +3,4 @@
 ./parser ../test/example2.kpl | diff ../test/result2.txt -
 ./parser ../test/example3.kpl | diff ../test/result3.txt -
 ./parser ../test/example4.kpl | diff ../test/result4.txt -
-
+./parser ../test/example_string_percent.kpl | diff ../test/result5.txt -

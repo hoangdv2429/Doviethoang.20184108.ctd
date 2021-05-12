@@ -214,6 +214,11 @@ void compileUnsignedConstant(void)
     eat(TK_CHAR);
     break;
   }
+  case TK_STRING:
+    {
+      eat(TK_STRING);
+      break;
+    }
   default:
   {
     error(ERR_INVALIDCONSTANT, lookAhead->lineNo, lookAhead->colNo);
@@ -232,6 +237,11 @@ void compileConstant(void)
   case TK_CHAR:
   {
     eat(TK_CHAR);
+    break;
+  }
+  case TK_STRING:
+  {
+    eat(TK_STRING);
     break;
   }
   default:
@@ -270,6 +280,7 @@ void compileType(void)
   {
   case KW_INTEGER:
   case KW_CHAR:
+  case KW_STRING:
   case TK_IDENT:
   {
     eat(lookAhead->tokenType);
@@ -304,6 +315,11 @@ void compileBasicType(void)
   case KW_CHAR:
   {
     eat(KW_CHAR);
+    break;
+  }
+  case KW_STRING:
+  {
+    eat(KW_STRING);
     break;
   }
   default:
@@ -395,6 +411,11 @@ void compileStatement(void)
   case KW_WHILE:
     compileWhileSt();
     break;
+  //
+  case KW_DO:
+    compileDoSt();
+    break;
+  //    
   case KW_FOR:
     compileForSt();
     break;
@@ -468,6 +489,17 @@ void compileWhileSt(void)
   eat(KW_DO);
   compileStatement();
   assert("While statement parsed ....");
+}
+
+void compileDoSt(void)
+{
+  assert("Parsing a Do While statement ....");
+  // TODO
+  eat(KW_DO);
+  compileStatement();
+  eat(KW_WHILE);
+  compileCondition();
+  assert("Do While statement parsed ....");
 }
 
 void compileForSt(void)
@@ -571,15 +603,10 @@ void compileExpression3(void)
   switch (lookAhead->tokenType)
   {
   case SB_PLUS:
-  {
-    eat(SB_PLUS);
-    compileTerm();
-    compileExpression3();
-    break;
-  }
+  case SB_PERCENT:
   case SB_MINUS:
   {
-    eat(SB_MINUS);
+    eat(lookAhead->tokenType);
     compileTerm();
     compileExpression3();
     break;
@@ -641,6 +668,7 @@ void compileFactor(void)
   }
   // UnsignedConstant
   case TK_CHAR:
+  case TK_STRING:
   case TK_NUMBER:
   {
     eat(lookAhead->tokenType);

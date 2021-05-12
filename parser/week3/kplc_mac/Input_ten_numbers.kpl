@@ -7,6 +7,7 @@ VAR A : ARRAY(. 10 .) OF T;
 
 PROCEDURE INPUT;
 VAR I: INTEGER;
+    
 BEGIN
     N := READI;
     FOR I := 1 TO N DO
@@ -21,20 +22,20 @@ BEGIN
     MIN := 0;
     I := 1;
     WHILE I <= N DO
-
         BEGIN
             IF MIN >= A(.I.) THEN
                 BEGIN
                 MIN := A(.I.);
                 I := I + 1;
                 END
-        END
-    WRITEI(MIN);
+        END;
+    CALL WRITEI(MIN);
 END;
 
 BEGIN
     CALL INPUT;
     CALL SMALLEST;
+    (*CALL WRITEI(SMALLEST);*)
 END.
 
 

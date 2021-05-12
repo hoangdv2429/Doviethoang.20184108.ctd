@@ -13,6 +13,7 @@ typedef enum {
   ERR_IDENTTOOLONG,
   ERR_INVALIDCHARCONSTANT,
   ERR_INVALIDSYMBOL,
+  ERR_INVALIDSTRINGCONSTANT, //
   ERR_INVALIDCONSTANT,
   ERR_INVALIDTYPE,
   ERR_INVALIDBASICTYPE,
@@ -31,6 +32,7 @@ typedef enum {
 #define ERM_INVALIDCHARCONSTANT "Invalid const char!"
 #define ERM_INVALIDSYMBOL "Invalid symbol!"
 #define ERM_INVALIDCONSTANT "Invalid constant!"
+#define ERM_INVALIDSTRINGCONSTANT "Invalid const string!" //
 #define ERM_INVALIDTYPE "Invalid type!"
 #define ERM_INVALIDBASICTYPE "Invalid basic type!"
 #define ERM_INVALIDPARAM "Invalid parameter!"
