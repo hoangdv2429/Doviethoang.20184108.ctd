@@ -1,0 +1,16 @@
+program Fibonacci;
+var n : integer;
+    sum : integer;
+
+function fibo(n : integer) : integer;
+begin
+    if n = 0 then fibo := 0;
+    if n = 1 then fibo := 1
+    else fibo := fibo(n - 1) + fibo(n - 2);
+end;
+
+begin
+    n := readi;
+    sum := fibo(n);
+    call writei(sum);
+end.
