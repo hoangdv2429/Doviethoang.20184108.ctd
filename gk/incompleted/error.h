@@ -46,7 +46,11 @@ typedef enum
   ERR_INVALID_CONSTANT_STRING,
 
   // Loi phan tu khong bang nhau
-  ERR_NUMBER_OF_ELEMENTS
+  ERR_NUMBER_OF_ELEMENTS,
+
+  //loi thay doi const
+  ERR_CHANGE_OF_CONSTANT,
+
 } ErrorCode;
 
 void error(ErrorCode err, int lineNo, int colNo);

@@ -112,6 +112,9 @@ Object *checkDeclaredLValueIdent(char *name)
     if (obj != symtab->currentScope->owner)
       error(ERR_INVALID_IDENT, currentToken->lineNo, currentToken->colNo);
     break;
+  case OBJ_CONSTANT:  
+      error(ERR_CHANGE_OF_CONSTANT, currentToken->lineNo, currentToken->colNo); //khong the thay doi const
+      break;
   default:
     error(ERR_INVALID_IDENT, currentToken->lineNo, currentToken->colNo);
   }

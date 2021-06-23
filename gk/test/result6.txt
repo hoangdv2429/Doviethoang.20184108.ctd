@@ -1,19 +1,33 @@
 Program EXAMPLE6
     Const C1 = 10
     Const C2 = 'a'
+    Const C3 = "hoang"
+    Const C4 = 3.141593
     Type T1 = Arr(10,Int)
+    Type T2 = Arr(10,Double)
     Var V1 : Int
-    Var V2 : Arr(10,Arr(10,Int))
+    Var V3 : Arr(10,Arr(10,Double))
+    Var V4 : Char
+    Var V5 : Double
+    Var V6 : String
     Function F : Int
         Param P1 : Int
         Param VAR P2 : Char
+
+    Function FD : Double
+        Param P1 : Double
+        Param VAR P2 : Char
+
+    Function FV : Int
 
     Procedure P
         Param V1 : Int
         Const C1 = 'a'
         Const C3 = 10
+        Const C2 = 3.124000
         Type T1 = Int
         Type T2 = Arr(10,Int)
         Var V2 : Arr(10,Int)
         Var V3 : Char
-
+        Var V4 : String
+        Var V5 : Double

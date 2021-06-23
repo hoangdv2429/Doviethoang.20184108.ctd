@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "error.h"
 
-#define NUM_OF_ERRORS 32
+#define NUM_OF_ERRORS 33
 
 struct ErrorMessage
 {
@@ -16,7 +16,7 @@ struct ErrorMessage
   char *message;
 };
 
-struct ErrorMessage errors[32] = {
+struct ErrorMessage errors[NUM_OF_ERRORS] = {
     {ERR_END_OF_COMMENT, "End of comment expected."},
     {ERR_IDENT_TOO_LONG, "Identifier too long."},
     {ERR_INVALID_CONSTANT_CHAR, "Invalid char constant."},
@@ -54,6 +54,9 @@ struct ErrorMessage errors[32] = {
 
     // Thêm lỗi phần tử không bằng nhau
     {ERR_NUMBER_OF_ELEMENTS, "The number of elements is not equal."},
+    // loi thay const
+    {ERR_CHANGE_OF_CONSTANT, "Constant can not be change."},
+
     {ERR_PARAMETERS_ARGUMENTS_INCONSISTENCY, "The number of arguments and the number of parameters are inconsistent."}};
 
 void error(ErrorCode err, int lineNo, int colNo)

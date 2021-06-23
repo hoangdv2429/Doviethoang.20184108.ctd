@@ -582,6 +582,7 @@ void compileAssignSt(void)
       eat(SB_COMMA);
   }
 
+
   eat(SB_ASSIGN);
   while (1)
   {
