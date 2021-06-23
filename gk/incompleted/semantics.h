@@ -33,6 +33,6 @@ void checkBasicType(Type *type);
 void checkTypeEquality(Type *type1, Type *type2);
 
 //
-Type* autoUpcasting(Type* type1, Type* type2);
+Type* upcasting(Type* type1, Type* type2); //another way for adding upcasting of checkTypeEquality
 
 #endif

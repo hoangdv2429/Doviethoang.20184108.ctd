@@ -12,21 +12,17 @@
 extern SymTab *symtab;
 extern Token *currentToken;
 
-Object *lookupObject(char *name)
-{
-  Scope *scope = symtab->currentScope;
-  Object *obj;
+Object* lookupObject(char *name) {
+  Scope* scope = symtab->currentScope;
+  Object* obj;
 
-  while (scope != NULL)
-  {
+  while (scope != NULL) {
     obj = findObject(scope->objList, name);
-    if (obj != NULL)
-      return obj;
+    if (obj != NULL) return obj;
     scope = scope->outer;
   }
   obj = findObject(symtab->globalObjectList, name);
-  if (obj != NULL)
-    return obj;
+  if (obj != NULL) return obj;
   return NULL;
 }
 
@@ -227,6 +223,7 @@ void checkArrayType(Type *type)
 // **************** START UPDATE ****************
 void checkTypeEquality(Type *type1, Type *type2)
 {
+
   if(type1 == NULL || type2 == NULL) {
     error(ERR_TYPE_INCONSISTENCY, currentToken->lineNo, currentToken->colNo);
   }
@@ -241,10 +238,11 @@ void checkTypeEquality(Type *type1, Type *type2)
   }
 }
 
-Type* autoUpcasting(Type* type1, Type* type2) {
+Type* upcasting(Type* type1, Type* type2) {
+
   checkNumberType(type1);
   checkNumberType(type2);
-  
+
   if (type1->typeClass == TP_DOUBLE) {
     return type1;
   } else {

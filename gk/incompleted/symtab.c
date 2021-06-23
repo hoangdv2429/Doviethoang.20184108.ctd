@@ -140,11 +140,11 @@ ConstantValue *makeDoubleConstant(double f)
 }
 
 // --- Them stringConstant ---
-ConstantValue *makeStringConstant(char str[])
+ConstantValue *makeStringConstant(char *s)
 {
-  ConstantValue *value = (ConstantValue *)malloc(sizeof(ConstantValue));
+  ConstantValue *value = (ConstantValue*)malloc(sizeof(ConstantValue));
   value->type = TP_STRING;
-  value->stringValue = str;
+  strcpy(value->stringValue, s);
   return value;
 }
 
@@ -162,23 +162,34 @@ ConstantValue *duplicateConstantValue(ConstantValue *v)
   value->type = v->type;
   if (v->type == TP_INT)
     value->intValue = v->intValue;
-
   // --- Thêm double ---
   else if (v->type == TP_DOUBLE)
     value->doubleValue = v->doubleValue;
 
   else if (v->type == TP_CHAR)
     value->charValue = v->charValue;
-
   // --- Them string ---
-  else if (v->type == TP_STRING)
-  {
+  else 
     // value->stringValue = v->stringValue;
-    memcpy(value->stringValue, v->stringValue, strlen(v->stringValue) + 1);
-  }
+    // memcpy(value->stringValue, v->stringValue, strlen(v->stringValue) + 1);
+    strcpy(value->stringValue, v->stringValue);
 
   return value;
 }
+
+// ConstantValue* duplicateConstantValue(ConstantValue* v) {
+//   ConstantValue* value = (ConstantValue*) malloc(sizeof(ConstantValue));
+//   value->type = v->type;
+//   if (v->type == TP_INT) 
+//     value->intValue = v->intValue;
+//   else if (v->type == TP_CHAR)
+//     value->charValue = v->charValue;
+//   else if (v->type == TP_DOUBLE)
+//     value->doubleValue = v->doubleValue;
+//   else
+//     strcpy(value->stringValue, v->stringValue);
+//   return value;
+// }
 
 /******************* Object utilities ******************************/
 

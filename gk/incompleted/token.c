@@ -40,16 +40,6 @@ struct
 
     // Thêm keyword STRING
     {"STRING", KW_STRING},
-    // Them keyword repeat, until
-    {"REPEAT", KW_REPEAT},
-    {"UNTIL", KW_UNTIL},
-
-    // Add keyword RETURN
-    {"RETURN", KW_RETURN},
-
-    // Add keyword SUM
-    // Nếu dùng đến SUM thì sửa lại cái này!!
-    {"KEYWORD SUMMMM", KW_SUM}
 
 };
 
@@ -149,21 +139,6 @@ char *tokenToString(TokenType tokenType)
 
   case KW_STRING:
     return "keyword STRING";
-
-  // Them repeat - until
-  case KW_REPEAT:
-    return "keyword REPEAT";
-
-  case KW_UNTIL:
-    return "keyword UNTIL";
-
-  // Add keyword RETURN
-  case KW_RETURN:
-    return "keyword RETURN";
-
-  // Add keyword SUM
-  case KW_SUM:
-    return "keyword SUM";
 
     // ************* END UPDATE *************
 

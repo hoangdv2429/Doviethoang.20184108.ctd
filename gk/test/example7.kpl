@@ -3,7 +3,8 @@ Program Example6;
             c2 = 'a';
             c3 = "hoang";
             c4 = 3.1415926;
-            c5 = "viet;
+            c5 = c3;
+(*   	    c5 = "viet";*)
 
    Type     t1 = array(. 10 .) of integer;
             t2 = array(. 10 .) of double;

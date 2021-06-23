@@ -8,7 +8,7 @@
 #define __TOKEN_H__
 
 #define MAX_IDENT_LEN 15
-
+#define MAX_STRING_LEN 1000
 #define KEYWORDS_COUNT 26
 
 typedef enum
@@ -49,16 +49,6 @@ typedef enum
   // Thêm keyword STRING
   KW_STRING,
 
-  // Them keyword REPEAT / ULTIL
-  KW_REPEAT,
-  KW_UNTIL,
-
-  // Add keyword RETURN
-  KW_RETURN,
-
-  // Thêm keyword SUM
-  KW_SUM,
-
   SB_SEMICOLON,
   SB_COLON,
   SB_PERIOD,
@@ -85,10 +75,11 @@ typedef struct
   char string[MAX_IDENT_LEN + 1];
   int lineNo, colNo;
   TokenType tokenType;
-  int value;            // --- Int value ---
+             // --- Int value ---
   int flagNumber;       // --- flagNumber = 0 -> int value, flagNumber = 1 -> doubleType ---
-  double fValue;         // --- Double value ---
-  char stringNode[256]; // --- Thêm String ---
+  double fValue;  
+  int value;        // --- Double value ---
+  char stringNode[MAX_STRING_LEN]; // --- Thêm String ---
 } Token;
 
 TokenType checkKeyword(char *string);

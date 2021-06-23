@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
 #include "reader.h"
 #include "charcode.h"
@@ -184,6 +185,9 @@ Token *readConstChar(void)
 Token *readConstString(void)
 {
   // printf("\n\nUa ki cuc di");
+  char* ident = (char*) calloc(MAX_STRING_LEN + 1, sizeof(char));
+  int i = 0;
+
   Token *token = makeToken(TK_STRING, lineNo, colNo);
   int count = 0;
   readChar();
@@ -198,15 +202,52 @@ Token *readConstString(void)
   while (charCodes[currentChar] != CHAR_DOUBLEQUOTE)
   {
     // printf("%c", currentChar);
-    if (count >= 256 || currentChar == '\n' || currentChar == EOF)
+    if (count >= MAX_STRING_LEN || currentChar == '\n' || currentChar == EOF)
       error(ERR_INVALID_CONSTANT_STRING, token->lineNo, token->colNo);
-    token->stringNode[count++] = currentChar;
+    // token->stringNode[count++] = currentChar;
+    // readChar();
+    ident[i] = (char) currentChar;
+    i++;
     readChar();
   }
-  token->stringNode[count] = '\0';
+  // token->stringNode[count] = '\0';
+  ident[i] = '\0';
+  strcpy(token->stringNode, ident);
+  if (ident != NULL) free(ident);
+
   readChar();
   return token;
 }
+
+// Token* readConstString(void) {
+//   // printf("what the asdfasdf ???");
+//   char* ident = (char*) calloc(MAX_STRING_LEN + 1, sizeof(char));
+
+//   int i = 0;
+//   readChar();
+//   Token* result = makeToken(TK_STRING, lineNo, colNo);
+
+//   do {
+//     if (currentChar == EOF) {
+//       error(ERR_INVALID_CONSTANT_STRING, lineNo, colNo);
+//     }
+//     if (charCodes[currentChar] == CHAR_DOUBLEQUOTE) break;
+//     if (i == MAX_STRING_LEN) {
+//       error(ERR_INVALID_CONSTANT_STRING, lineNo, colNo);
+//     }
+
+//     ident[i] = (char) currentChar;
+//     i++;
+//     readChar();
+//   } while (1);
+  
+//   ident[i] = '\0';
+//   strcpy(result->string, ident);
+//   if (ident != NULL) free(ident);
+//   readChar();
+//   return result;
+
+// }
 
 Token *getToken(void)
 {
@@ -482,24 +523,6 @@ void printToken(Token *token)
   // Thêm keyword String
   case KW_STRING:
     printf("KW_STRING\n");
-    break;
-
-  // Them repeat - Until
-  case KW_REPEAT:
-    printf("KW_REPEAT\n");
-    break;
-  case KW_UNTIL:
-    printf("KW_UNTIL\n");
-    break;
-
-  // Add RETURN
-  case KW_RETURN:
-    printf("KW_RETURN\n");
-    break;
-
-  // Add SUM
-  case KW_SUM:
-    printf("KW_SUM\n");
     break;
 
   case SB_SEMICOLON:

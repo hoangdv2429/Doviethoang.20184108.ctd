@@ -12,6 +12,7 @@
 #include "semantics.h"
 #include "error.h"
 #include "debug.h"
+#include "symtab.h"
 
 Token *currentToken;
 Token *lookAhead;
@@ -285,7 +286,7 @@ ConstantValue *compileConstant(void)
     break;
   case TK_STRING:
     eat(TK_STRING);
-    constValue = makeStringConstant(currentToken->string);
+    constValue = makeStringConstant(currentToken->stringNode); //phần này phải để string node để tạo token in được string 
     break;
   default:
     constValue = compileConstant2();
@@ -303,7 +304,6 @@ ConstantValue *compileConstant2(void)
   {
   case TK_NUMBER:
     eat(TK_NUMBER);
-
     // Tạo thêm cho double
     if (currentToken->flagNumber == 0)
       constValue = makeIntConstant(currentToken->value);
@@ -313,8 +313,15 @@ ConstantValue *compileConstant2(void)
   case TK_IDENT:
     eat(TK_IDENT);
     obj = checkDeclaredConstant(currentToken->string);
-    if (obj->constAttrs->value->type == TP_INT)
+    // if (obj->constAttrs->value->type == TP_INT)
+    // printf("loi o day\n");
+    if (obj->constAttrs->value->type == TP_INT || obj->constAttrs->value->type == TP_DOUBLE
+        || obj->constAttrs->value->type == TP_CHAR || obj->constAttrs->value->type == TP_STRING) //add various type
+    {
+      // printf("hay loi o day\n");
       constValue = duplicateConstantValue(obj->constAttrs->value);
+      // printf("stop this pain\n");
+      }
     else
       error(ERR_UNDECLARED_INT_CONSTANT, currentToken->lineNo, currentToken->colNo);
     break;
@@ -525,13 +532,16 @@ Type *compileLValue(void)
     if (var->varAttrs->type->typeClass == TP_ARRAY)
       varType = compileIndexes(var->varAttrs->type);
     else
-      varType = var->varAttrs->type;
+      // varType = var->varAttrs->type;
+      varType = duplicateType(var->varAttrs->type);
     break;
   case OBJ_PARAMETER:
-    varType = var->paramAttrs->type;
+    // varType = var->paramAttrs->type;
+    varType = duplicateType(var->paramAttrs->type);
     break;
   case OBJ_FUNCTION:
-    varType = var->funcAttrs->returnType;
+    // varType = var->funcAttrs->returnType;
+    varType = duplicateType(var->funcAttrs->returnType);
     break;
   default:
     error(ERR_INVALID_LVALUE, currentToken->lineNo, currentToken->colNo);
@@ -851,7 +861,6 @@ Type *compileExpression(void)
     checkNumberType(type);
     // checkIntType(type);
     break;
-
   default:
     type = compileExpression2();
   }
@@ -871,6 +880,7 @@ Type *compileExpression2(void)
   {
     checkTypeEquality(type1, type2);
     return type1;
+    // or return upcasting(type1, type2); still work anyway
   }
 }
 
@@ -886,19 +896,17 @@ Type* compileExpression3(void) {
 
     type2 = compileExpression3();
     if (type2 != NULL) {
-      return autoUpcasting(type1, type2);
+      return upcasting(type1, type2);
     }
-    
     return type1;
     break;
   case SB_MINUS:
     eat(SB_MINUS);
     type1 = compileTerm();
     checkNumberType(type1);
-
     type2 = compileExpression3();
     if (type2 != NULL) {
-      return autoUpcasting(type1, type2);
+      return upcasting(type1, type2);
     }
     
     return type1;
@@ -936,7 +944,7 @@ Type* compileTerm(void) {
   type2 = compileTerm2();
 
   if (type2 != NULL) {
-    return autoUpcasting(type1, type2);
+    return upcasting(type1, type2);
   }
 
   return type1;
@@ -954,7 +962,7 @@ Type* compileTerm2(void) {
 
     type2 = compileTerm2();
     if (type2 != NULL) {
-      return autoUpcasting(type1, type2);
+      return upcasting(type1, type2);
     }
     return type1;
     break;
@@ -965,7 +973,7 @@ Type* compileTerm2(void) {
 
     type2 = compileTerm2();
     if (type2 != NULL) {
-      return autoUpcasting(type1, type2);
+      return upcasting(type1, type2);
     }
     return type1;
     break;

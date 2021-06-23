@@ -54,7 +54,7 @@ struct ConstantValue_
     char charValue;
     // Thêm double
     double doubleValue;
-    char *stringValue;
+    char stringValue[MAX_STRING_LEN];
   };
 };
 
