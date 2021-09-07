@@ -6,7 +6,7 @@ Program Example6;
             c5 = c3;
 (*   	    c5 = "viet";*)
 
-   Type     t1 = array(. 10 .) of integer;
+   Type     t1 = array(. 10.) of integer;
             t2 = array(. 10 .) of double;
 
    Var      v1 : Integer;

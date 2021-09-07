@@ -18,7 +18,7 @@ typedef enum
   TK_NUMBER,
   TK_CHAR,
   TK_EOF,
-
+  //TK_EQUAL,
   // Thêm token String
   TK_STRING,
 

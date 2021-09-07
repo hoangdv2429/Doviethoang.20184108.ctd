@@ -35,4 +35,5 @@ void checkTypeEquality(Type *type1, Type *type2);
 //
 Type* upcasting(Type* type1, Type* type2); //another way for adding upcasting of checkTypeEquality
 
+Type *Operator_check(Type *type1, Type *type2);
 #endif

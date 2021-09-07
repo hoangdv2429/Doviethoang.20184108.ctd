@@ -879,9 +879,10 @@ Type *compileExpression2(void)
     return type1;
   else
   {
-    checkTypeEquality(type1, type2);
-    return type1;
-    // or return upcasting(type1, type2); still work anyway
+    // 
+    //return type1;
+    // or 
+    return Operator_check(type1, type2);
   }
 }
 
@@ -897,7 +898,7 @@ Type* compileExpression3(void) {
 
     type2 = compileExpression3();
     if (type2 != NULL) {
-      return upcasting(type1, type2);
+      return Operator_check(type1, type2);
     }
     return type1;
     break;
@@ -907,9 +908,8 @@ Type* compileExpression3(void) {
     checkNumberType(type1);
     type2 = compileExpression3();
     if (type2 != NULL) {
-      return upcasting(type1, type2);
+      return Operator_check(type1, type2);
     }
-    
     return type1;
     break;
     // check the FOLLOW set
@@ -945,7 +945,7 @@ Type* compileTerm(void) {
   type2 = compileTerm2();
 
   if (type2 != NULL) {
-    return upcasting(type1, type2);
+    return Operator_check(type1, type2);
   }
 
   return type1;
@@ -963,7 +963,7 @@ Type* compileTerm2(void) {
 
     type2 = compileTerm2();
     if (type2 != NULL) {
-      return upcasting(type1, type2);
+      return Operator_check(type1, type2);
     }
     return type1;
     break;
@@ -974,7 +974,7 @@ Type* compileTerm2(void) {
 
     type2 = compileTerm2();
     if (type2 != NULL) {
-      return upcasting(type1, type2);
+      return Operator_check(type1, type2);
     }
     return type1;
     break;

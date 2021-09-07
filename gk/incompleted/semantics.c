@@ -3,7 +3,7 @@
  * @author Huu-Duc Nguyen
  * @version 1.0
  */
-
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "semantics.h"
@@ -12,17 +12,21 @@
 extern SymTab *symtab;
 extern Token *currentToken;
 
-Object* lookupObject(char *name) {
-  Scope* scope = symtab->currentScope;
-  Object* obj;
+Object *lookupObject(char *name)
+{
+  Scope *scope = symtab->currentScope;
+  Object *obj;
 
-  while (scope != NULL) {
+  while (scope != NULL)
+  {
     obj = findObject(scope->objList, name);
-    if (obj != NULL) return obj;
+    if (obj != NULL)
+      return obj;
     scope = scope->outer;
   }
   obj = findObject(symtab->globalObjectList, name);
-  if (obj != NULL) return obj;
+  if (obj != NULL)
+    return obj;
   return NULL;
 }
 
@@ -112,9 +116,9 @@ Object *checkDeclaredLValueIdent(char *name)
     if (obj != symtab->currentScope->owner)
       error(ERR_INVALID_IDENT, currentToken->lineNo, currentToken->colNo);
     break;
-  case OBJ_CONSTANT:  
-      error(ERR_CHANGE_OF_CONSTANT, currentToken->lineNo, currentToken->colNo); //khong the thay doi const
-      break;
+  case OBJ_CONSTANT:
+    error(ERR_CHANGE_OF_CONSTANT, currentToken->lineNo, currentToken->colNo); //khong the thay doi const
+    break;
   default:
     error(ERR_INVALID_IDENT, currentToken->lineNo, currentToken->colNo);
   }
@@ -125,7 +129,7 @@ Object *checkDeclaredLValueIdent(char *name)
 void checkIntType(Type *type)
 {
   // TODO
-  // printf("Vao trong nay");
+  printf("Vao trong nay1");
   if (type->typeClass == TP_INT && type != NULL)
   {
     return;
@@ -136,7 +140,7 @@ void checkIntType(Type *type)
 
 void checkDoubleType(Type *type)
 {
-  // printf("Vao trong nay");
+  printf("Vao trong nay2");
   if ((type != NULL) && (type->typeClass == TP_DOUBLE))
   {
     return;
@@ -149,9 +153,11 @@ void checkDoubleType(Type *type)
 
 void checkNumberType(Type *type)
 {
-  // printf("Vao trong nay");
+  printf("Vao trong nay3");
   if ((type != NULL) && (type->typeClass == TP_INT || type->typeClass == TP_DOUBLE))
+  {
     return;
+  }
   else
     error(ERR_TYPE_INCONSISTENCY, currentToken->lineNo, currentToken->colNo);
 }
@@ -227,13 +233,14 @@ void checkArrayType(Type *type)
 void checkTypeEquality(Type *type1, Type *type2)
 {
 
-  if(type1 == NULL || type2 == NULL) {
+  if (type1 == NULL || type2 == NULL)
+  {
     error(ERR_TYPE_INCONSISTENCY, currentToken->lineNo, currentToken->colNo);
   }
   // Cho ép kiểu từ int -> double
   if (type1->typeClass == TP_DOUBLE && type2->typeClass == TP_INT)
   {
-    return ;
+    return;
   }
   if (compareType(type1, type2) == 0)
   {
@@ -241,17 +248,33 @@ void checkTypeEquality(Type *type1, Type *type2)
   }
 }
 
-Type* upcasting(Type* type1, Type* type2) {
+Type *upcasting(Type *type1, Type *type2)
+{
 
   checkNumberType(type1);
   checkNumberType(type2);
 
-  if (type1->typeClass == TP_DOUBLE) {
+  if (type1->typeClass == TP_DOUBLE)
+  {
     return type1;
-  } else {
+  }
+  else
+  {
     return type2;
   }
 }
 
+Type *Operator_check(Type *type1, Type *type2)
+{
+  checkNumberType(type1);
+  checkNumberType(type2);
+  if (type1->typeClass == TP_DOUBLE)
+    return type1;
+  else if(type2->typeClass == TP_DOUBLE)
+    return type2;
+  else
+    return type1;
+  
+}
 
 // **************** END UPDATE ****************
